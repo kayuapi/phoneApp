@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "813735392195",
+    "firebase_url": "https://chmandroidappproject.firebaseio.com",
+    "project_id": "chmandroidappproject",
+    "storage_bucket": "chmandroidappproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813735392195:android:6ae0473d67ede699068376",
+        "android_client_info": {
+          "package_name": "com.chmappproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813735392195-fu496dsg2op7s8fvv5pf0rfe1rvjb5nd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC8xMbwfMOL6D1R4JfmX5f464NxAMSS18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813735392195-fu496dsg2op7s8fvv5pf0rfe1rvjb5nd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
