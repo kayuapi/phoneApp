@@ -59,6 +59,7 @@ const OrderDataProvider = ({
         listOrders(
           shopId: $shopId
           fulfillmentMethodOrderId: $fulfillmentMethodOrderId
+          limit: 1000
         ){
           items {
             createdAt
