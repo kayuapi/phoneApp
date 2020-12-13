@@ -56,6 +56,7 @@ export const Order = React.memo(function Order(props) {
             <View style={styles.topRow}>
               <Title>
                 #{props.orderId}{' '}
+                {props.tableNumber && `(Table: ${props.tableNumber})`}
                 {props.fulfillmentMethod === 'DINE_IN' && <Avatar.Icon style={{backgroundColor: 'black'}} color="red" size={26} icon="table-chair" />}
                 {props.fulfillmentMethod === 'SELF_PICKUP' && <Avatar.Icon style={{backgroundColor: 'black'}} color="red" size={26} icon="home-import-outline" />}
                 {props.fulfillmentMethod === 'DELIVERY' && <Avatar.Icon style={{backgroundColor: 'black'}} color="red" size={26} icon="truck-delivery" />}
