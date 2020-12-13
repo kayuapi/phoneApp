@@ -74,6 +74,7 @@ export const DetailedOrder = (props) => {
   const theme = useTheme();
   // console.log('props DetailedOrder', props);
   const [checked, setChecked] = React.useState([]);
+  const [checked2, setChecked2] = React.useState([]);
   const [ filterValues,
     state,
     loading,
@@ -137,17 +138,36 @@ export const DetailedOrder = (props) => {
               key={index}
               title={`${orderedItem.name} ${orderedItem.variant ? `(${orderedItem.variant})`: ''}`}
               description={`Quantity: ${orderedItem.quantity}`}
-              left={props => 
-                <Checkbox.Android 
-                  status={checked.includes(index) ? 'checked': 'unchecked'} 
-                  onPress={() => {
-                    if (checked.includes(index)) {
-                      const result = checked.filter(id => id !== index);
-                      setChecked(result);
-                    } else {
-                      setChecked([...checked, index]);
-                    }
-                  }} />}          
+              left={props =>
+                <> 
+                  <Checkbox.Android 
+                    color='blue'
+                    uncheckedColor='blue'
+                    status={checked.includes(index) ? 'checked': 'unchecked'} 
+                    onPress={() => {
+                      if (checked.includes(index)) {
+                        const result = checked.filter(id => id !== index);
+                        setChecked(result);
+                      } else {
+                        setChecked([...checked, index]);
+                      }
+                    }} 
+                  />
+                  <Checkbox.Android 
+                    color='red'
+                    uncheckedColor='red'
+                    status={checked2.includes(index) ? 'checked': 'unchecked'} 
+                    onPress={() => {
+                      if (checked2.includes(index)) {
+                        const result = checked2.filter(id => id !== index);
+                        setChecked2(result);
+                      } else {
+                        setChecked2([...checked2, index]);
+                      }
+                    }} 
+                  />
+                </>
+              }          
             />))
           }
 
