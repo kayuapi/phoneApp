@@ -1,17 +1,19 @@
 import React from 'react';
-import { FlatList, View, StyleSheet, TouchableOpacity, Text, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
+import { Platform, FlatList, View, StyleSheet, TouchableOpacity, Text, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme, Menu, Provider, Button } from 'react-native-paper';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { Order } from './components/order';
 import { twitts, orders } from './data';
 import { StackNavigatorParamlist } from './types';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Accordion from 'react-native-collapsible/Accordion';
 import Animated from 'react-native-reanimated';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  startOfDay,
+  endOfDay,
   endOfYesterday,
   startOfWeek,
   subWeeks,
@@ -51,6 +53,8 @@ export const Feed = (props: Props) => {
   const requestUnfulfilledOrder = rout.name === 'Unfulfilled orders';
   // console.log('navig', navig);
   // console.log('rout', rout);
+  const [todayDate, setTodayDate] = React.useState(new Date());
+  const [showDatePicker, setShowDatePicker] = React.useState(false);
   const [filterValues, state, loading, changeFilterValues, updateOrderData, renew, updateRenew, refreshData, triggerRefreshData] = useOrderData();
   const [menuVisible, setMenuVisible] = React.useState({
     date_range: false,
@@ -62,6 +66,19 @@ export const Feed = (props: Props) => {
     triggerRefreshData();
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  const onDatePickerChange = (event, selectedDate) => {
+    const currentDate = selectedDate || todayDate;
+    setShowDatePicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      const startingDate = startOfDay(selectedDate);
+      const endingDate = endOfDay(selectedDate);
+      changeFilterValues({...filterValues, date_range: [
+        `${startingDate.getTime()}00`,
+        `${endingDate.getTime()}zz`,
+      ], date_range_text: selectedDate.toLocaleDateString()});
+    }
+  };
   // console.log('start date', subWeeks(startOfWeek(new Date()),1).getTime());
   // console.log('end date', startOfWeek(new Date()).getTime()-1);
   // console.log('final', state.orders);
@@ -135,7 +152,16 @@ export const Feed = (props: Props) => {
                 }}
                 title="Last month"
               />
+              <Menu.Item 
+                onPress={() => {
+                  setMenuVisible({...menuVisible, date_range: false});
+                  setShowDatePicker(true);
+                  // setMenuVisible({...menuVisible, date_range: true});
+                }}
+                title="Specific date"
+              />
             </Menu>
+
           </View>
           <View style={styles.buttonContainer}>
             <Menu
@@ -200,6 +226,17 @@ export const Feed = (props: Props) => {
             extraData={renew}
           />        
         }
+        {showDatePicker && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={todayDate}
+            mode={'date'}
+            is24Hour={true}
+            display="calendar"
+            onChange={onDatePickerChange}
+          />
+        )}
+
       {/* </Provider> */}
 
 
