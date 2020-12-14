@@ -2,6 +2,7 @@ import React from 'react';
 import { Platform, FlatList, View, StyleSheet, TouchableOpacity, Text, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme, Menu, Provider, Button } from 'react-native-paper';
+import Dialog from "react-native-dialog";
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { Order } from './components/order';
 import { twitts, orders } from './data';
@@ -55,6 +56,8 @@ export const Feed = (props: Props) => {
   // console.log('rout', rout);
   const [todayDate, setTodayDate] = React.useState(new Date());
   const [showDatePicker, setShowDatePicker] = React.useState(false);
+  const [showTableFilterField, setShowTableFilterField] = React.useState(false);
+  const [tableValue, setTableValue] = React.useState('');
   const [filterValues, state, loading, changeFilterValues, updateOrderData, renew, updateRenew, refreshData, triggerRefreshData] = useOrderData();
   const [menuVisible, setMenuVisible] = React.useState({
     date_range: false,
@@ -179,31 +182,38 @@ export const Feed = (props: Props) => {
               }>
               <Menu.Item
                 onPress={() => {
-                  changeFilterValues({...filterValues, fulfillmentMethod: 'ALL'});
+                  changeFilterValues({...filterValues, fulfillmentMethod: 'ALL', subFilter: null});
                   setMenuVisible({...menuVisible, fulfillmentMethod: false});
                 }}
                 title="ALL"
               />
               <Menu.Item
                 onPress={() => {
-                  changeFilterValues({...filterValues, fulfillmentMethod: 'ON PREMISE'});
+                  changeFilterValues({...filterValues, fulfillmentMethod: 'ON PREMISE', subFilter: null});
                   setMenuVisible({...menuVisible, fulfillmentMethod: false});
                 }}
                 title="ON PREMISE"
               />
               <Menu.Item
                 onPress={() => {
-                  changeFilterValues({...filterValues, fulfillmentMethod: 'DELIVERY'});
+                  changeFilterValues({...filterValues, fulfillmentMethod: 'DELIVERY', subFilter: null});
                   setMenuVisible({...menuVisible, fulfillmentMethod: false});
                 }}
                 title="DELIVERY"
               />
               <Menu.Item
                 onPress={() => {
-                  changeFilterValues({...filterValues, fulfillmentMethod: 'SELF PICKUP'});
+                  changeFilterValues({...filterValues, fulfillmentMethod: 'SELF PICKUP', subFilter: null});
                   setMenuVisible({...menuVisible, fulfillmentMethod: false});
                 }}
                 title="SELF PICKUP"
+              />
+              <Menu.Item
+                onPress={() => {
+                  setMenuVisible({...menuVisible, fulfillmentMethod: false});
+                  setShowTableFilterField(true);
+                }}
+                title="BY TABLE"
               />
             </Menu>
           </View>
@@ -236,6 +246,23 @@ export const Feed = (props: Props) => {
             onChange={onDatePickerChange}
           />
         )}
+        <Dialog.Container visible={showTableFilterField}>
+          <Dialog.Title>Filter by table number:</Dialog.Title>
+          <Dialog.Input 
+            wrapperStyle={{
+              borderWidth: 1, 
+              borderTopLeftRadius: 5, 
+              borderTopRightRadius: 5,
+              borderBottomLeftRadius: 5,
+              borderBottomRightRadius: 5,
+            }} 
+            value={tableValue} onChangeText={setTableValue} autoFocus={true} />
+          <Dialog.Button label="Cancel" onPress={() => {setShowTableFilterField(false); setTableValue(null);}} />
+          <Dialog.Button label="Confirm" onPress={() => {
+            setShowTableFilterField(false);
+            changeFilterValues({...filterValues, fulfillmentMethod: 'BY TABLE', subFilter: tableValue});
+          }} />
+        </Dialog.Container>
 
       {/* </Provider> */}
 

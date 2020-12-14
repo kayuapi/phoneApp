@@ -37,6 +37,7 @@ const OrderDataProvider = ({
     ],
     date_range_text: 'This week',
     fulfillmentMethod: 'ALL',
+    subFilter: null,
   });
   const [refreshData, setRefreshData] = React.useState(false);
   const [menuVisible, setMenuVisible] = React.useState({
@@ -100,6 +101,7 @@ const OrderDataProvider = ({
         const startingDate = filterValues['date_range'][0];
         const endingDate = filterValues['date_range'][1];
         let fulfillmentMethod = filterValues['fulfillmentMethod'];
+        let subFilter = filterValues['subFilter'];
         // mapping the ui text to api call input parameter
         if (fulfillmentMethod === 'ON PREMISE') {
           fulfillmentMethod = 'DINE_IN';
@@ -107,6 +109,8 @@ const OrderDataProvider = ({
           fulfillmentMethod = 'DELIVERY';
         } else if (fulfillmentMethod === 'SELF PICKUP') {
           fulfillmentMethod = 'SELF_PICKUP';
+        } else if (fulfillmentMethod === 'BY TABLE') {
+          fulfillmentMethod = 'DINE_IN';
         }
         let callFunc;
         if (fulfillmentMethod === 'ALL') {
@@ -126,6 +130,10 @@ const OrderDataProvider = ({
             combinedOrderList = results[0]['data']['listOrders']['items'];
             fulfilledCombinedOrderList = combinedOrderList.filter(order => order.status === 'FULFILLED');
             combinedOrderList = combinedOrderList.filter(order => order.status !== 'FULFILLED');
+            if (subFilter) {
+              fulfilledCombinedOrderList = fulfilledCombinedOrderList.filter(order => order.tableNumber === subFilter);
+              combinedOrderList = combinedOrderList.filter(order => order.tableNumber === subFilter);
+            }
           }
           if (results.length === 3) {
             combinedOrderList = [
