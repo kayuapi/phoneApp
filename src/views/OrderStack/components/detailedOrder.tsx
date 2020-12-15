@@ -1,15 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ListItem } from 'react-native-elements'
 import {
   Surface,
   Title,
   Caption,
-  Avatar,
-  Subheading,
   useTheme,
   Text,
-  List,
   Checkbox,
   Button,
 } from 'react-native-paper';
@@ -133,43 +131,52 @@ export const DetailedOrder = (props) => {
             {props.fulfillmentMethod === 'DELIVERY' && `Delivery date and time: ${new Date(`${props.deliveryDate}T${props.deliveryTime}`).toLocaleDateString()}, ${new Date(`${props.deliveryDate}T${props.deliveryTime}`).toLocaleTimeString()}`}            
           </Text>
 
-          {props.orderedItems.map((orderedItem, index) => (
-            <List.Item 
-              key={index}
-              title={`${orderedItem.name} ${orderedItem.variant ? `(${orderedItem.variant})`: ''}`}
-              description={`Quantity: ${orderedItem.quantity}`}
-              left={props =>
-                <> 
-                  <Checkbox.Android 
-                    color='blue'
-                    uncheckedColor='blue'
-                    status={checked.includes(index) ? 'checked': 'unchecked'} 
-                    onPress={() => {
-                      if (checked.includes(index)) {
-                        const result = checked.filter(id => id !== index);
-                        setChecked(result);
-                      } else {
-                        setChecked([...checked, index]);
-                      }
-                    }} 
-                  />
-                  <Checkbox.Android 
-                    color='red'
-                    uncheckedColor='red'
-                    status={checked2.includes(index) ? 'checked': 'unchecked'} 
-                    onPress={() => {
-                      if (checked2.includes(index)) {
-                        const result = checked2.filter(id => id !== index);
-                        setChecked2(result);
-                      } else {
-                        setChecked2([...checked2, index]);
-                      }
-                    }} 
-                  />
-                </>
-              }          
-            />))
-          }
+          {props.orderedItems.map((orderedItem, index) => {
+            let processedVariantName = '';
+            if (orderedItem.variant) {
+              processedVariantName = JSON.stringify(orderedItem.variant)
+                .replace(/["']/g, '')
+                .replace(/[,]/g, '\n');
+            }
+            return (
+              <ListItem key={index}>
+                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                  <View style={{flexDirection: 'row', paddingRight: 20}}>
+                    <Checkbox.Android 
+                      color='blue'
+                      uncheckedColor='blue'
+                      status={checked.includes(index) ? 'checked': 'unchecked'} 
+                      onPress={() => {
+                        if (checked.includes(index)) {
+                          const result = checked.filter(id => id !== index);
+                          setChecked(result);
+                        } else {
+                          setChecked([...checked, index]);
+                        }
+                      }} 
+                    />
+                    <Checkbox.Android 
+                      color='red'
+                      uncheckedColor='red'
+                      status={checked2.includes(index) ? 'checked': 'unchecked'} 
+                      onPress={() => {
+                        if (checked2.includes(index)) {
+                          const result = checked2.filter(id => id !== index);
+                          setChecked2(result);
+                        } else {
+                          setChecked2([...checked2, index]);
+                        }
+                      }} 
+                    />
+                  </View>
+                  <ListItem.Content>
+                    <ListItem.Title>{orderedItem.name}{processedVariantName && `\n${processedVariantName}`}</ListItem.Title>
+                    <ListItem.Subtitle>Quantity: {orderedItem.quantity}</ListItem.Subtitle>
+                  </ListItem.Content>
+                </View>
+              </ListItem>
+            )
+          })}
 
         </View>
       </Surface>
