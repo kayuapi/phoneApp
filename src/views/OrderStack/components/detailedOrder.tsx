@@ -113,6 +113,9 @@ export const DetailedOrder = (props) => {
           {props.fulfillmentMethod}
         </Subheading> */}
         <View style={{flex: 1, paddingLeft: 20}}>
+          {props.customAttributeField1 && (
+            <Text>{props.customAttributeField1}</Text>
+          )}
           <Title>
             {props.fulfillmentMethod === 'DINE_IN' ? `Table ${props.tableNumber}`: `${props.firstName} ${props.lastName ? props.lastName : ''}`}
           </Title>

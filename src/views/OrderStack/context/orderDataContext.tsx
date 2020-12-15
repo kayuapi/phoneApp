@@ -77,6 +77,7 @@ const OrderDataProvider = ({
             pickupDate
             pickupTime
             vehiclePlateNumber
+            customAttributeField1
             deliveryDate
             deliveryTime
             deliveryAddress
