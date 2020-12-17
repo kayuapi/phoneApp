@@ -116,6 +116,9 @@ export const DetailedOrder = (props) => {
           {props.customAttributeField1 && (
             <Text>{props.customAttributeField1}</Text>
           )}
+          {props.customAttributeField2 && (
+            <Text>{props.customAttributeField2}</Text>
+          )}
           <Title>
             {props.fulfillmentMethod === 'DINE_IN' ? `Table ${props.tableNumber}`: `${props.firstName} ${props.lastName ? props.lastName : ''}`}
           </Title>
@@ -180,7 +183,9 @@ export const DetailedOrder = (props) => {
               </ListItem>
             )
           })}
-
+          {props.storeFrontSideTotalPrice && (
+            <Text style={{color: 'red'}}>{`\n\nTotal price shown on customers' side: RM ${props.storeFrontSideTotalPrice.replace(/[^0-9.-]+/g,'')}`}</Text>
+          )}
         </View>
       </Surface>
 
