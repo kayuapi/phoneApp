@@ -12,6 +12,8 @@ import {
   Button,
 } from 'react-native-paper';
 import { useOrderData } from '../context/orderDataContext';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Linking } from 'react-native';
 import color from 'color';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 
@@ -26,6 +28,9 @@ type Props = {
   comments: number;
   retweets: number;
   hearts: number;
+};
+const openURL = async (url) => {
+  await Linking.openURL(url);
 };
 
 const updateOrderStatus = async (shopId, fulfillmentMethod, orderId) => {
@@ -83,6 +88,7 @@ export const DetailedOrder = (props) => {
  ] = useOrderData();
   // console.log('update order data', updateOrderData);
   const navigation = useNavigation();
+  const totalOrderedItemQuantity = props.orderedItems.reduce((acc, item) => acc + item.quantity, 0)
   // const contentColor = color(theme.colors.text)
   //   .alpha(0.8)
   //   .rgb()
@@ -123,7 +129,9 @@ export const DetailedOrder = (props) => {
             {props.fulfillmentMethod === 'DINE_IN' ? `Table ${props.tableNumber}`: `${props.firstName} ${props.lastName ? props.lastName : ''}`}
           </Title>
           <Text>
-            {props.phoneNumber && `phone: ${props.phoneNumber}\n`}
+            {props.phoneNumber && `phone: ${props.phoneNumber}`}
+            {props.phoneNumber && <Icon name="logo-whatsapp" size={60} color="#4F8EF7" onPress={() => {openURL(`https://wa.me/${props.phoneNumber}`)}} />}
+            {props.phoneNumber && `\n`}
             {props.fulfillmentMethod === 'DELIVERY' && `Delivery address: ${props.deliveryAddress}`}
           </Text>
           <Text>
@@ -186,6 +194,7 @@ export const DetailedOrder = (props) => {
           {props.storeFrontSideTotalPrice && (
             <Text style={{color: 'red'}}>{`\n\nTotal price shown on customers' side: RM ${props.storeFrontSideTotalPrice.replace(/[^0-9.-]+/g,'')}`}</Text>
           )}
+          <Text style={{color: 'red'}}>{`\n\nTotal item ordered: ${totalOrderedItemQuantity} `}</Text>
         </View>
       </Surface>
 
