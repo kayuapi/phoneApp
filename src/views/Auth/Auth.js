@@ -43,7 +43,7 @@ class Auth extends React.Component {
           source={require('../../assets/logo.png')}
         />
         <Text style={styles.title}>Chmbox</Text>
-        <Text style={styles.subtitle}>v 1.0.5</Text>
+        <Text style={styles.subtitle}>v 1.0.6</Text>
         {showSignIn && (
           <SignIn
             toggleAuthType={this.toggleAuthType}
