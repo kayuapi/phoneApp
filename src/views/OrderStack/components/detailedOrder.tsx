@@ -141,8 +141,11 @@ export const DetailedOrder = (props) => {
 
           <Text>
             {props.paymentMethod && `\n**${props.paymentMethod}**\n`}
-            {props.fulfillmentMethod === 'SELF_PICKUP' && `Pickup date and time: ${new Date(`${props.pickupDate}T${props.pickupTime}`).toLocaleDateString()}, ${new Date(`${props.pickupDate}T${props.pickupTime}`).toLocaleTimeString()}`}
-            {props.fulfillmentMethod === 'DELIVERY' && `Delivery date and time: ${new Date(`${props.deliveryDate}T${props.deliveryTime}`).toLocaleDateString()}, ${new Date(`${props.deliveryDate}T${props.deliveryTime}`).toLocaleTimeString()}`}            
+            {props.fulfillmentMethod === 'SELF_PICKUP' && !props.pickupTime && `Pickup date: ${new Date(`${props.pickupDate}`).toLocaleDateString()}`}
+            {props.fulfillmentMethod === 'SELF_PICKUP' && props.pickupTime && `Pickup date and time: ${new Date(`${props.pickupDate}T${props.pickupTime}`).toLocaleDateString()}, ${new Date(`${props.pickupDate}T${props.pickupTime}`).toLocaleTimeString()}`}
+            {props.fulfillmentMethod === 'DELIVERY' && !props.deliveryTime && `Delivery date: ${new Date(`${props.deliveryDate}`).toLocaleDateString()}`}
+            {props.fulfillmentMethod === 'DELIVERY' && props.deliveryTime && `Delivery date and time: ${new Date(`${props.deliveryDate}T${props.deliveryTime}`).toLocaleDateString()}, ${new Date(`${props.deliveryDate}T${props.deliveryTime}`).toLocaleTimeString()}`}            
+            
           </Text>
 
           {props.orderedItems.map((orderedItem, index) => {
@@ -184,8 +187,8 @@ export const DetailedOrder = (props) => {
                     />
                   </View>
                   <ListItem.Content>
-                    <ListItem.Title>{orderedItem.name}{processedVariantName && `\n${processedVariantName}`}</ListItem.Title>
-                    <ListItem.Subtitle>Quantity: {orderedItem.quantity}</ListItem.Subtitle>
+                    <ListItem.Title style={{fontSize: 22}}>{orderedItem.name}{processedVariantName && `\n${processedVariantName}`}</ListItem.Title>
+                    <ListItem.Subtitle style={{fontSize: 20}}>Quantity: {orderedItem.quantity}</ListItem.Subtitle>
                   </ListItem.Content>
                 </View>
               </ListItem>
