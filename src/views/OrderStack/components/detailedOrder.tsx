@@ -142,9 +142,9 @@ export const DetailedOrder = (props) => {
           <Text>
             {props.paymentMethod && `\n**${props.paymentMethod}**\n`}
             {props.fulfillmentMethod === 'SELF_PICKUP' && !props.pickupTime && `Pickup date: ${new Date(`${props.pickupDate}`).toLocaleDateString()}`}
-            {props.fulfillmentMethod === 'SELF_PICKUP' && props.pickupTime && `Pickup date and time: ${new Date(`${props.pickupDate}T${props.pickupTime}`).toLocaleDateString()}, ${new Date(`${props.pickupDate}T${props.pickupTime}`).toLocaleTimeString()}`}
+            {props.fulfillmentMethod === 'SELF_PICKUP' && props.pickupTime && `Pickup date and time: ${new Date(props.pickupDate.replace(/T.*/, '')).toLocaleDateString()}, ${new Date(`${props.pickupDate}T${props.pickupTime}`).toLocaleTimeString()}`}
             {props.fulfillmentMethod === 'DELIVERY' && !props.deliveryTime && `Delivery date: ${new Date(`${props.deliveryDate}`).toLocaleDateString()}`}
-            {props.fulfillmentMethod === 'DELIVERY' && props.deliveryTime && `Delivery date and time: ${new Date(`${props.deliveryDate}T${props.deliveryTime}`).toLocaleDateString()}, ${new Date(`${props.deliveryDate}T${props.deliveryTime}`).toLocaleTimeString()}`}            
+            {props.fulfillmentMethod === 'DELIVERY' && props.deliveryTime && `Delivery date and time: ${new Date(props.deliveryDate.replace(/T.*/, '')).toLocaleDateString()}, ${new Date(`${props.deliveryDate}T${props.deliveryTime}`).toLocaleTimeString()}`}            
             
           </Text>
 
