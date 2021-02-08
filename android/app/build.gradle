@@ -133,8 +133,8 @@ android {
         applicationId "com.chmappproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 14
-        versionName "v 1.0.8"
+        versionCode 15
+        versionName "v 1.0.9"
         multiDexEnabled true
     }
     splits {
