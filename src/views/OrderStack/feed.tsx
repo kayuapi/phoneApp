@@ -21,6 +21,7 @@ import {
   startOfMonth,
   endOfMonth,
   endOfWeek,
+  addMonths,
   subMonths,
 } from 'date-fns';
 import { useLinkBuilder, useNavigation, useRoute } from '@react-navigation/native';
@@ -115,6 +116,16 @@ export const Feed = (props: Props) => {
                   {filterValues.date_range_text}
                 </Button>
               }>
+              <Menu.Item
+                onPress={() => {
+                  changeFilterValues({...filterValues, date_range: [
+                    `${addMonths(startOfMonth(new Date()),1).getTime()}00`,
+                    `${addMonths(endOfMonth(new Date()), 1).getTime()}zz`,
+                  ], date_range_text: 'Next month'});
+                  setMenuVisible({...menuVisible, date_range: false});
+                }}
+                title="Next month"
+              />                
               <Menu.Item
                 onPress={() => {
                   changeFilterValues({...filterValues, date_range: [
